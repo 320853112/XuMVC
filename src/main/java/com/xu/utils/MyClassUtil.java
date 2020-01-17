@@ -10,28 +10,32 @@ import java.util.Enumeration;
 import java.util.List;
 
 public class MyClassUtil {
-    public static List<Class> getClasses(String packageName) throws IOException {
-        packageName = packageName.replace(".", "/");
+    public static List<Class> getClasses(String packageName)  {
+        String packagePath = packageName.replace(".", "/");
         ArrayList<Class> classes = new ArrayList();
         ClassLoader classLoader = MyClassUtil.class.getClassLoader();
-        Enumeration<URL> dirs = classLoader.getResources(packageName);
-        while (dirs.hasMoreElements()) {
-            URL url = dirs.nextElement();
-            String protocol = url.getProtocol();
-            if ("file".equals(protocol)) {
-                // 获取包的物理路径
-                String packagePath = URLDecoder.decode(url.getFile(), "UTF-8");
-                // 以文件的方式扫描整个包下的文件 并添加到集合中
-                findAndAddClassesInPackageByFile(packagePath,classes);
-
+        Enumeration<URL> dirs = null;
+        try {
+            dirs = classLoader.getResources(packagePath);
+            while (dirs.hasMoreElements()) {
+                URL url = dirs.nextElement();
+                String protocol = url.getProtocol();
+                if ("file".equals(protocol)) {
+                    // 获取包的物理路径
+                    String filePath = URLDecoder.decode(url.getFile(), "UTF-8");
+                    // 以文件的方式扫描整个包下的文件 并添加到集合中
+                    findAndAddClassesInPackageByFile(packageName,filePath,classes);
+                }
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-
+        return classes;
     }
 
-    private static void findAndAddClassesInPackageByFile(String packagePath,ArrayList<Class> classes) {
-        File dir = new File(packagePath);
+    private static void findAndAddClassesInPackageByFile(String packageName,String filePath,ArrayList<Class> classes) {
+        File dir = new File(filePath);
         //如果不存在或不是文件，直接退出
         if(!dir.exists()||!dir.isDirectory()){
             return ;
@@ -46,12 +50,12 @@ public class MyClassUtil {
         for (File file : dirfiles) {
 //            是文件夹则继续递归
             if(file.isDirectory()){
-                findAndAddClassesInPackageByFile(packagePath + "." + file.getName(),classes);
+                findAndAddClassesInPackageByFile(packageName + "." + file.getName(),file.getAbsolutePath(),classes);
             }else{
                 //获取类名
                 String className = file.getName().substring(0, file.getName().length() - 6);
                 try {
-                    classes.add(Class.forName(packagePath+"."+className));
+                    classes.add(Class.forName(packageName+"."+className));
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
