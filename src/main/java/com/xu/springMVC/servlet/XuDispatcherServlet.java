@@ -21,7 +21,7 @@ public class XuDispatcherServlet extends HttpServlet {
 
     //MVC容器对象 (类名，对象)
     private ConcurrentHashMap<String,Object> springMVCBeans = new ConcurrentHashMap<String, Object>();
-    //（url,类名）
+    //（url,对象）
     private ConcurrentHashMap<String,Object> urlBeans = new ConcurrentHashMap<String, Object>();
     //（url,方法名）
     private ConcurrentHashMap<String,String> urlMethod = new ConcurrentHashMap<String, String>();
@@ -67,7 +67,15 @@ public class XuDispatcherServlet extends HttpServlet {
         }
         String resultPage = (String)methodInvoke(object, methodName);
         resp.getWriter().write(resultPage);
+        resourceViewResolver(resultPage,req,resp);
 
+
+    }
+
+    private void resourceViewResolver(String pageName,HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+        String prefix = "/";
+        String suffix = ".jsp";
+        req.getRequestDispatcher(prefix+pageName+suffix).forward(req,resp);
     }
 
     private Object methodInvoke(Object object,String methodName){
@@ -97,7 +105,7 @@ public class XuDispatcherServlet extends HttpServlet {
             Class<?> clazz = object.getClass();
             //判断类上是否加了mapping注解
             XuRequestMapping xuRequestMapping = clazz.getDeclaredAnnotation(XuRequestMapping.class);
-            String baseUrl =null ;
+            String baseUrl = "" ;
             if (xuRequestMapping != null) {
 //                获取value放入map
                 baseUrl = xuRequestMapping.value();
