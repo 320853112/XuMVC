@@ -1,5 +1,6 @@
 package com.xu.test;
 
+import com.xu.utils.ClassUtil;
 import com.xu.utils.MyClassUtil;
 
 import java.util.List;
@@ -21,8 +22,8 @@ public class Test {
 //        for (Class clazz : classes) {
 //            System.out.println(clazz.getName());
 //        }
-        String a = "b";
-        System.out.println(a.getClass().getName());
-        System.out.println(a.getClass().getSimpleName());
+        System.out.println(MyClassUtil.toLowerCaseFirstLetter("Class"));
+        System.out.println("123".length());
+        System.out.println("123".substring(0,3));
     }
 }

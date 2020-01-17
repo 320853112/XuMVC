@@ -62,6 +62,14 @@ public class MyClassUtil {
             }
 
         }
+    }
+
+    public static String toLowerCaseFirstLetter(String className){
+        String first = className.substring(0, 1);
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append(first.toLowerCase());
+        stringBuffer.append(className.substring(1));
+        return stringBuffer.toString();
 
     }
 
