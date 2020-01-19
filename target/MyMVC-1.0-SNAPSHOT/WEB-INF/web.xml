@@ -30,10 +30,19 @@
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
-<servlet>
-    <servlet-name>dispatcher</servlet-name>
-    <servlet-class>com.xu.springMVC.servlet.XuDispatcherServlet</servlet-class>
-</servlet>
+    <servlet>
+        <servlet-name>dispatcher</servlet-name>
+        <servlet-class>com.xu.springMVC.servlet.XuDispatcherServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>test</servlet-name>
+        <url-pattern>/test1</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>test</servlet-name>
+        <servlet-class>com.xu.servlet.TestServlet</servlet-class>
+    </servlet>
 
 </web-app>
         

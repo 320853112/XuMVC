@@ -3,6 +3,7 @@ package com.xu.test;
 import com.xu.utils.ClassUtil;
 import com.xu.utils.MyClassUtil;
 
+import java.nio.charset.Charset;
 import java.util.List;
 
 public class Test {
@@ -22,8 +23,7 @@ public class Test {
 //        for (Class clazz : classes) {
 //            System.out.println(clazz.getName());
 //        }
-        System.out.println(MyClassUtil.toLowerCaseFirstLetter("Class"));
-        System.out.println("123".length());
-        System.out.println("123".substring(0,3));
+        System.out.println(System.getProperty("file.encoding"));
+        System.out.println(Charset.defaultCharset().name());
     }
 }

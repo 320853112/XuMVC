@@ -1,8 +1,7 @@
 package com.xu.springMVC.servlet;
 
-import com.xu.annotation.XuController;
-import com.xu.annotation.XuRequestMapping;
-import com.xu.utils.ClassUtil;
+import com.xu.annotation.MyController;
+import com.xu.annotation.MyRequestMapping;
 import com.xu.utils.MyClassUtil;
 
 import javax.servlet.ServletException;
@@ -90,7 +89,7 @@ public class XuDispatcherServlet extends HttpServlet {
 
     public void findClassMVCAnnotation(List<Class> classes) throws IllegalAccessException, InstantiationException {
         for (Class clazz : classes) {
-            Annotation xuController = clazz.getDeclaredAnnotation(XuController.class);
+            Annotation xuController = clazz.getDeclaredAnnotation(MyController.class);
             if(xuController!=null){
                 String className = MyClassUtil.toLowerCaseFirstLetter(clazz.getSimpleName());
                 springMVCBeans.put(className,clazz.newInstance());
@@ -104,16 +103,16 @@ public class XuDispatcherServlet extends HttpServlet {
             Object object = entry.getValue();
             Class<?> clazz = object.getClass();
             //判断类上是否加了mapping注解
-            XuRequestMapping xuRequestMapping = clazz.getDeclaredAnnotation(XuRequestMapping.class);
+            MyRequestMapping myRequestMapping = clazz.getDeclaredAnnotation(MyRequestMapping.class);
             String baseUrl = "" ;
-            if (xuRequestMapping != null) {
+            if (myRequestMapping != null) {
 //                获取value放入map
-                baseUrl = xuRequestMapping.value();
+                baseUrl = myRequestMapping.value();
             }
             //判断方法上是否加了url映射地址
             Method[] methods = clazz.getMethods();
             for (Method method : methods) {
-                XuRequestMapping mappingAnnotation = method.getDeclaredAnnotation(XuRequestMapping.class);
+                MyRequestMapping mappingAnnotation = method.getDeclaredAnnotation(MyRequestMapping.class);
                 if (mappingAnnotation!=null) {
                     String url = baseUrl+mappingAnnotation.value();
                     urlBeans.put(url,object);
