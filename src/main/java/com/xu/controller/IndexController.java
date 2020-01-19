@@ -7,9 +7,15 @@ import com.xu.annotation.XuRequestMapping;
 @XuRequestMapping("/xu")
 public class IndexController {
 
-    @XuRequestMapping("/test")
-    public String test(){
+    @XuRequestMapping("/test1")
+    public String test1(){
         System.out.println("method running");
-        return "index";
+        return "indexB";
+    }
+
+    @XuRequestMapping("/test2")
+    public String test2(){
+        System.out.println("method running");
+        return "WEB-INF/indexA";
     }
 }
